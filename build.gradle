@@ -1,0 +1,74 @@
+plugins {
+    id 'java'
+    id 'io.qameta.allure' version '4.3.0'
+}
+
+group = 'mipkasnow.dev'
+version = '1.0-SNAPSHOT'
+
+def allureJavaVersion = '3.0.0'
+def allureReportVersion = '3.17.0'
+def aspectJVersion = '1.9.25.1'
+def junitVersion = '6.1.3'
+def selenideAppiumVersion = '7.19.0'
+def dadbVersion = '1.2.10'
+def ashotVersion = '1.5.4'
+def jacksonVersion = '2.19.2'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    agent {
+        canBeResolved = true
+        canBeConsumed = false
+    }
+}
+
+dependencies {
+    agent "org.aspectj:aspectjweaver:$aspectJVersion"
+
+    testImplementation platform("org.junit:junit-bom:$junitVersion")
+    testImplementation platform("io.qameta.allure:allure-bom:$allureJavaVersion")
+
+    testImplementation "com.codeborne:selenide-appium:$selenideAppiumVersion"
+    testImplementation "dev.mobile:dadb:$dadbVersion"
+    testImplementation "ru.yandex.qatools.ashot:ashot:$ashotVersion"
+    testImplementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+    testImplementation 'io.qameta.allure:allure-jupiter'
+    testImplementation 'io.qameta.allure:allure-selenide'
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testCompileOnly 'org.projectlombok:lombok:1.18.42'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.42'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testRuntimeOnly "org.aspectj:aspectjrt:$aspectJVersion"
+}
+
+allure {
+    version = allureReportVersion
+    adapter {
+        autoconfigure.set(false)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs.add('-parameters')
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    systemProperty 'appium.url', System.getProperty('appium.url', 'http://127.0.0.1:4723')
+    systemProperty 'screenshot.override', System.getProperty('screenshot.override', 'false')
+    if (System.getProperty('android.udid') != null) {
+        systemProperty 'android.udid', System.getProperty('android.udid')
+    }
+    jvmArgumentProviders.add({ ["-javaagent:${configurations.agent.singleFile}"] } as CommandLineArgumentProvider)
+}

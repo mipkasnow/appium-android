@@ -1,0 +1,35 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# VS Code / Cursor
+.vscode/
+.cursor/
+
+# OS
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+
+# Local / secrets
+.env
+.env.*
+*.local
+*.log
+
+# Appium MCP local config
+src/test/resources/mcp/
+
+# Allure / test artifacts
+allure-results/
+allure-report/
+/screenshots/
