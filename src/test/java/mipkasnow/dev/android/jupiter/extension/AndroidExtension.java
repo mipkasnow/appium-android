@@ -43,6 +43,7 @@ public class AndroidExtension implements
         Configuration.browserSize = null;
         Configuration.timeout = 15_000;
         Configuration.pollingInterval = 200;
+        Configuration.pageLoadTimeout = -1;
 
         root.getStore(NAMESPACE).put(CONFIGURED, Boolean.TRUE);
     }
