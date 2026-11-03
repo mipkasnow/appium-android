@@ -2,7 +2,7 @@
 
 Демо UI-тестов для Android-приложения **FrontRow** (Appium + Selenide + JUnit 5 + Allure).
 
-![Экран Profile](src/test/resources/screenshots/profile-logged-in.png)
+<img src="src/test/resources/screenshots/profile-logged-in.png" alt="Экран Profile" width="400">
 
 ## Стек
 
